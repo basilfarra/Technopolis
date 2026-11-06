@@ -50,9 +50,10 @@ class Roles
 
     protected function userRoutes()
     {
-        if (!Cache::has('user_routes')) {
-            Cache::forever('user_routes', auth()->user()->roles[0]->allowed_route);
-        }
-        return Cache::get('user_routes');
+        $key = 'user_routes_' . auth()->id();
+
+        return Cache::remember($key, now()->addHours(12), function () {
+            return auth()->user()->roles[0]->allowed_route;
+        });
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WorldSeeder extends Seeder
 {
@@ -13,14 +14,14 @@ class WorldSeeder extends Seeder
      */
     public function run()
     {
-        $sql_file = public_path('course_ecommerce_world.sql');
-        $db = [
-            'host' => '127.0.0.1',
-            'database' => 'ecommerce',
-            'username' => 'root',
-            'password' => null,
-        ];
+        // Countries, states and cities (phpMyAdmin dump). Runs through the application's own
+        // database connection (.env), one statement at a time, so no MySQL CLI or root account is needed.
+        $sql = file_get_contents(database_path('data/course_ecommerce_world.sql'));
 
-        exec("mysql --user={$db['username']} --password={$db['password']} --host={$db['host']} --database={$db['database']} < $sql_file");
+        foreach (preg_split('/;\s*\R/', $sql) as $statement) {
+            if (trim($statement) !== '') {
+                DB::unprepared($statement);
+            }
+        }
     }
 }

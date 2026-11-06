@@ -27,7 +27,7 @@ class EntrustSeeder extends Seeder
         $supervisor = User::create(['first_name' => 'Supervisor', 'last_name' => 'System',  'username' => 'supervisor', 'email' => 'supervisor@ecommerce.test', 'email_verified_at' => now(), 'mobile' => '966500000001', 'password' => bcrypt('123123123'), 'status' => 1, 'remember_token' => Str::random(10)]);
         $supervisor->attachRole($supervisorRole);
 
-        $customer = User::create(['first_name' => 'Sami', 'last_name' => 'Mansour', 'username' => 'sami', 'email' => 'sami@gmail.com', 'email_verified_at' => now(), 'mobile' => '966500000002', 'password' => bcrypt('123123123'), 'status' => 1, 'remember_token' => Str::random(10)]);
+        $customer = User::create(['first_name' => 'Sami', 'last_name' => 'Mansour', 'username' => 'sami', 'email' => 'customer@ecommerce.test', 'email_verified_at' => now(), 'mobile' => '966500000002', 'password' => bcrypt('123123123'), 'status' => 1, 'remember_token' => Str::random(10)]);
         $customer->attachRole($customerRole);
 
         /*

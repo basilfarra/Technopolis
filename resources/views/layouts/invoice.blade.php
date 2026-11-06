@@ -133,9 +133,7 @@
                 <table>
                     <tr>
                         <td>
-                            MindsCMS<br />
-                            12345 Jeddah<br />
-                            Jeddah, SA 12345
+                            {{ config('app.name') }}
                         </td>
                         <td></td>
                         <td>

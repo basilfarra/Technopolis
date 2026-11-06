@@ -15,6 +15,7 @@ use App\Services\OrderService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Meneses\LaravelMpdf\Facades\LaravelMpdf as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PaymentController extends Controller
 {
@@ -47,7 +48,13 @@ class PaymentController extends Controller
 
     public function cancelled($order_id)
     {
-        $order = Order::find($order_id);
+        // Only the customer's own, still-unpaid order can be cancelled (prevents cancelling
+        // other customers' orders and repeated stock restoration).
+        $order = Order::whereKey($order_id)
+            ->where('user_id', auth()->id())
+            ->where('order_status', Order::NEW_ORDER)
+            ->firstOrFail();
+
         $order->update([
             'order_status' => Order::CANCELED
         ]);
@@ -65,7 +72,11 @@ class PaymentController extends Controller
 
     public function completed($order_id)
     {
-        $order = Order::with('products', 'user', 'payment_method')->find($order_id);
+        $order = Order::with('products', 'user', 'payment_method')
+            ->whereKey($order_id)
+            ->where('user_id', auth()->id())
+            ->where('order_status', Order::NEW_ORDER)
+            ->firstOrFail();
 
         $omniPay = new OmnipayService('PayPal_Express');
         $response = $omniPay->complete([
@@ -110,6 +121,7 @@ class PaymentController extends Controller
             $data = $order->toArray();
             $data['currency_symbol'] = $order->currency == 'USD' ? '$' : $order->currency;
             $pdf = PDF::loadView('layouts.invoice', $data);
+            File::ensureDirectoryExists(storage_path('app/pdf/files'));
             $saved_file = storage_path('app/pdf/files/' . $data['ref_id'] . '.pdf');
             $pdf->save($saved_file);
 
@@ -120,6 +132,9 @@ class PaymentController extends Controller
             toast('Your recent payment is successful with reference code: ' . $response->getTransactionReference(), 'success');
             return redirect()->route('frontend.index');
         }
+
+        toast($response->getMessage() ?: 'The payment could not be completed.', 'error');
+        return redirect()->route('frontend.cart');
     }
 
     public function webhook($order, $env)

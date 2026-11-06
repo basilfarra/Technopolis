@@ -35,7 +35,7 @@
                     <p class="small text-muted mb-0">&copy; 2023 All rights reserved.</p>
                 </div>
                 <div class="col-lg-6 text-lg-right">
-                    <p class="small text-muted mb-0">Template Edited by Design <a class="text-white reset-anchor" href="#">Basil & Yousef</a></p>
+                    <p class="small text-muted mb-0">Based on the Boutique template by <a class="text-white reset-anchor" href="https://bootstrapious.com" target="_blank" rel="noopener">Bootstrapious</a>, customised by Basil &amp; Yousef</p>
                 </div>
             </div>
         </div>

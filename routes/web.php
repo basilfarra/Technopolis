@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\Backend;
 use App\Http\Controllers\Frontend;
-use App\Notifications\Frontend\Customer\OrderThanksNotification;
 use Illuminate\Support\Facades\Route;
-use Meneses\LaravelMpdf\Facades\LaravelMpdf as PDF;
 
 
 Route::get('/', [Frontend\FrontendController::class, 'index'])->name('frontend.index');

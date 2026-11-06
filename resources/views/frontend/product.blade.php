@@ -114,7 +114,7 @@
                                         </ul>
                                         <p class="mb-0">{{ $review->title }}</p>
                                         <p class="text-small mb-0 text-muted">
-                                            {!! $review->message !!}
+                                            {!! nl2br(e($review->message)) !!}
                                         </p>
                                     </div>
                                 </div>

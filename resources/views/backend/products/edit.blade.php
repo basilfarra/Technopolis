@@ -55,7 +55,7 @@
                     <div class="col-12">
                         <label for="description">Description</label>
                         <textarea name="description" rows="3" class="form-control summernote">
-                            {!! old('description', $product->description) !!}
+                            {{ old('description', $product->description) }}
                         </textarea>
                     </div>
                 </div>
